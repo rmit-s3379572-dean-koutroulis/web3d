@@ -13,7 +13,9 @@ controls.addEventListener('change', render);
 
 animate();
 createBox();
+createAxes();
 init();
+
 
 
 function render() {
@@ -26,7 +28,7 @@ function animate() {
     controls.update();
 }
 function init(){
-  camera.position.z = 3;
+  camera.position.z = 10;
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x404040, 1);
   document.body.appendChild(renderer.domElement);
@@ -61,11 +63,43 @@ function createBox()
   geometry.faces.push(new THREE.Face3(2, 6, 7));
   geometry.faces.push(new THREE.Face3(3, 7, 4));
 
+  geometry.faces.push(new THREE.Face3(1, 0, 5));
+
 
 
   geometry.computeFaceNormals();
   var material = new THREE.MeshBasicMaterial({color: 0xffff00});
 var object = new THREE.Mesh(geometry, material);
-material.wireframe = true;
 scene.add(object);
+}
+
+
+/**
+ * Create and return a set of axes
+ */
+
+function createAxes(length)
+{
+  length = 5
+  var geometry = new THREE.Geometry();
+  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(4, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(0, length, 0));
+  geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+  geometry.vertices.push(new THREE.Vector3(0, 0, length));
+  geometry.colors.push(new THREE.Color(0xff0000));
+  geometry.colors.push(new THREE.Color(0xff0000));
+  geometry.colors.push(new THREE.Color(0x00ff00));
+  geometry.colors.push(new THREE.Color(0x00ff00));
+  geometry.colors.push(new THREE.Color(0x0000ff));
+  geometry.colors.push(new THREE.Color(0x0000ff));
+
+  var material = new THREE.LineBasicMaterial();
+  material.vertexColors = THREE.VertexColors;
+
+  var axes = new THREE.LineSegments(geometry, material);
+  axes.name = "axes";
+
+  return axes;
 }
